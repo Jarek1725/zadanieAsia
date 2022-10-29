@@ -32,12 +32,13 @@ bool checkIfNextNumberIsLower(int index, vector<int> &inputData) {
     return false;
 }
 
-
-vector<int> getDescendingSeriesInRange(int index, int counter, vector<int> &inputData) {
+//      4.2 biorę index i counter i od danego indexu np: 0 dodaje do tablicy tyle liczb ile pokazuje counter np: 4
+//          dla {5, 4, 2, 1, 0, 3, 2, 1} przy index: 0 i counter: 4, dodam do tablicy zwracającej liczby: {5, 4, 2, 1, 0}
+vector<int> getDescendingSequenceInRangeFromIndex(int index, int counter, vector<int> &inputData) {
     vector<int> returnData;
-    cout<<"index: "<<index<<endl;
-    cout<<"counter: "<<counter<<endl;
-    cout<<"----------------"<<endl;
+//    cout<<"index: "<<index<<endl;
+//    cout<<"counter: "<<counter<<endl;
+//    cout<<"----------------"<<endl;
     for (counter; counter >= 0; counter--) {
         returnData.push_back(inputData[index]);
         index++;
@@ -45,15 +46,23 @@ vector<int> getDescendingSeriesInRange(int index, int counter, vector<int> &inpu
     return returnData;
 }
 
-void test(int counter, int index, vector<int> &inputData, vector<vector<int>> &returnData){
 
-    int currentCounter = counter;
+//  w tej funkcji dostaję informację o maksymalnie długim ciągu w danym zakresie liczb
+//  później po dodaniu tego maksymalnie długiego podciągu znajduję podciągi
+//  np. {5, 4, 2, 1, 0} maksymalnym ciągiem malejącym w tym zakresie jest {5, 4, 2, 1, 0}
+//  później podciągami są {5, 4, 2, 1} oraz {4, 2, 1, 0}
+//  później podciągami są {5, 4, 2}, {4, 2, 1} oraz {2, 1, 0}
+//  ...
+//  aż dojdziemy do podciągów o długości 2, mniejszych podciągów już nie może być
+void getAllDescendingSequencesInRangeFromIndex(int counter, int index, vector<int> &inputData, vector<vector<int>> &returnData){
+
+    int maxCounter = counter;
     while (counter > 0) {
-        int test = currentCounter + 1 - counter;
-        while (test > 0) {
-            int firstIndex = index - counter - test + 1;
-            returnData.push_back(getDescendingSeriesInRange(firstIndex, counter, inputData));
-            test--;
+        int numberOfSubSequences = maxCounter - counter + 1;
+        while (numberOfSubSequences > 0) {
+            int firstIndex = index - counter - numberOfSubSequences + 1;
+            returnData.push_back(getDescendingSequenceInRangeFromIndex(firstIndex, counter, inputData));
+            numberOfSubSequences--;
         }
         counter--;
     }
@@ -64,7 +73,7 @@ void test(int counter, int index, vector<int> &inputData, vector<vector<int>> &r
 // ad. 2.2 zadeklarowana funkcja, do której podaję zmienne wprowadzone na początku,
 //         w której będę przechodził po kolei przez wszystkie podane liczby
 //         i patrzył czy występuje ciąg: a(n)>a(n+1)
-vector<vector<int>> findDescendingSeries(vector<int> &inputData) {
+vector<vector<int>> findDescendingSequences(vector<int> &inputData) {
 //         na początku deklaruję tablicę do której będę dodawał malejace ciągi
 
 //         wiem że vector<vector<int>> może się wydawać straszne, sam vector<int> to tablica zawierająca liczby
@@ -86,7 +95,7 @@ vector<vector<int>> findDescendingSeries(vector<int> &inputData) {
 //         jeśli następa liczba nie jest mniejsza to znaczy że ciąg się kończy
 //         w takim przypadku mogę zacząć znalezione ciągi wypisywać
         else {
-            test(counter, i, inputData, returnData);
+            getAllDescendingSequencesInRangeFromIndex(counter, i, inputData, returnData);
             counter = 0;
         }
     }
@@ -97,19 +106,21 @@ vector<vector<int>> findDescendingSeries(vector<int> &inputData) {
 
 int main() {
 // ad. 1
-    vector<int> inputData = {5, 4, 2, 1, 0, 3, 2, 1};
+    vector<int> inputData = {5, 4, 2, 2, 1};
 
 // ad. 2.1 podaję dane do wyżej zadeklarowanej funkcji
-    vector<vector<int>> vector = findDescendingSeries(inputData);
+    vector<vector<int>> allDescendingSequences = findDescendingSequences(inputData);
 
 //    pokazuje w konsoli wszystkie znalezione ciągi
-    for (auto item: vector) {
-        cout << "----------------" << endl;
-        for (const auto &item: item) {
+    for (auto descendingSequences: allDescendingSequences) {
+        for (const auto &item: descendingSequences) {
             cout << item <<", ";
         }
         cout << endl;
+        cout << "----------------" << endl;
     }
+
+    cout<<"Liczba ciągów malejących to: "<<allDescendingSequences.size();
 
     return 0;
 }
