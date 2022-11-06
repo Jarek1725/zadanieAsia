@@ -14,18 +14,6 @@ bool checkIfNextNumberIsLower(int index, vector<int> &inputData) {
     return false;
 }
 
-vector<int> getDescendingSequenceInRangeFromIndex(int index, int counter, vector<int> &inputData) {
-    vector<int> returnData;
-    cout << "index: " << index << endl;
-    cout << "counter: " << counter << endl;
-    cout << "----------------" << endl;
-    for (counter; counter >= 0; counter--) {
-        returnData.push_back(inputData[index]);
-        index++;
-    }
-    return returnData;
-}
-
 
 void getAllDescendingSequencesInRangeFromIndex(int counter, int index, vector<int> &inputData,
                                                vector<vector<int>> &returnData) {
