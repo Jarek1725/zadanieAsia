@@ -20,7 +20,10 @@ void getAllDescendingSequencesInRangeFromIndex(int counter, int index, vector<in
         while (numberOfSubSequences > 0) {
             int firstIndex = index - counter - numberOfSubSequences + 1;
             returnData.push_back(
-                    vector<int>{inputData.begin() + firstIndex, inputData.begin() + firstIndex + counter + 1});
+                    vector<int>{
+                            inputData.begin() + firstIndex,
+                            inputData.begin() + firstIndex + counter + 1
+                    });
             numberOfSubSequences--;
         }
         counter--;
@@ -46,7 +49,8 @@ vector<vector<int>> findDescendingSequences(vector<int> &inputData) {
 }
 
 int main() {
-    vector<int> inputData = {17, 16, 15, 14, 13, 12, 11, 11, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
+    int input = 0;
+    vector<int> inputData = {17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
 
     vector<vector<int>> allDescendingSequences = findDescendingSequences(inputData);
 
@@ -57,5 +61,6 @@ int main() {
         cout << endl;
         cout << "----------------" << endl;
     }
+    cout << "Liczba podciagow malejacych: "<<allDescendingSequences.size();
     return 0;
 }
