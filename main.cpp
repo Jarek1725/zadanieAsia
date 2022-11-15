@@ -49,7 +49,6 @@ vector<vector<int>> findDescendingSequences(vector<int> &inputData) {
 }
 
 int main() {
-    int input = 0;
     vector<int> inputData = {17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
 
     vector<vector<int>> allDescendingSequences = findDescendingSequences(inputData);
